@@ -8,7 +8,7 @@ from geometry_msgs.msg import Twist
 from std_msgs.msg import Int16
 
 import myrostools
-from worker import *
+from work import *
 from listener import Listener
 
 HOST = ''
@@ -31,9 +31,9 @@ def main():
     pub_vel = myrostools.pub_vel
 
     # Thread Pooooooool
-    laser_t = Listener(worker_laser, HOST, PORT['LASER'])
-    enc_t = Listener(worker_enc, HOST, PORT['ENC'])
-    vel_t = Listener(worker_vel, HOST, PORT['VEL'])
+    laser_t = Listener(work_laser, HOST, PORT['LASER'])
+    enc_t = Listener(work_enc, HOST, PORT['ENC'])
+    vel_t = Listener(work_vel, HOST, PORT['VEL'])
     threadManger = [laser_t, enc_t, vel_t] # Wrapper
 
     while not rospy.is_shutdown():

@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
-""" ClientThread for specific object
+""" Listener for Remote Client send Request
 
 The module define the object ClientThread hold the port and ip for multithreading.
+Can Register specific JOB
 
 Todo:
     Try catch
@@ -11,7 +12,16 @@ import rospy
 from threading import Thread
 
 class Listener(Thread):
-    
+    """ Listener Class.
+    The Class register by ip, port and run by start
+
+    Note:
+        max_client need to consider        
+    Args:
+        ip : default is localhost
+        port : default is http/80/tcp
+    """
+
     def __init__(self, job, ip='127.0.0.1', port=80, max_client=1):
         Thread.__init__(self)
         self.job = job
@@ -31,3 +41,4 @@ class Listener(Thread):
             cl_msg = cl_msg.rstrip(' \t\r\n\0')
             cmsg = cl_msg.split()
             self.job(conn, cmsg)
+
