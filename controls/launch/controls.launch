@@ -1,5 +1,3 @@
 <launch>
-    <node pkg="controls" type="scan.py" name="scan_values" output="screen">
-        
-    </node>
+    <node pkg="roboticlab" type="main.py" name="scan_values" output="screen"/>
 </launch>

@@ -21,14 +21,14 @@ int main(){
 	if (sock == -1)
 		printf("ERROR: Fail to create a socket!");
 
-	char IPaddress[] = {"xxx.xxx.xx.xxx"}
+	char IPaddress[] = {"127.0.0.1"};
 	
 	// connect the socket
 	struct sockaddr_in info;
 	bzero(&info, sizeof(info));
 	info.sin_family = AF_INET;
 	info.sin_addr.s_addr = inet_addr(IPaddress);
-	info.sin_port = htons(1024);
+	info.sin_port = htons(8001);
 
 	int err = connect(sock, (struct sockaddr *)&info, sizeof(info));
 	if (err == -1){

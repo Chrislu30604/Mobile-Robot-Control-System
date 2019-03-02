@@ -1,4 +1,3 @@
-#! /usr/bin/env python
 import threading, rospy, string, sys
 from sensor_msgs.msg import LaserScan
 from std_msgs.msg import Int16
@@ -37,7 +36,7 @@ def manage_laserdata(ranges, decimal):
 			message += (str(laser_data[540+i])[:decimal] + ' ');
 		#print 'Send Laserdata 540~720';
 	else:
-		print 'Error in ', frameinfo.filename, frameinfo.lineno, ': wrong ranges (0~180 or 540~720)'; 
+		print('Error in ', frameinfo.filename, frameinfo.lineno, ': wrong ranges (0~180 or 540~720)')
 	return message;
 
 ##### Thread for velocity command #####
