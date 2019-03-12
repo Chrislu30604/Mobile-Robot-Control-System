@@ -48,14 +48,17 @@ class WalkWheel():
 
 
 def callback_laser(msg):
+    global laser_data 
     laser_data = msg.ranges
 
 
 def callback_Renconder(msg):
+    global Rencoder 
     Rencoder = msg.data
 
 
 def callback_Lencoder(msg):
+    global Lenconder 
     Lenconder = msg.data
 
 
