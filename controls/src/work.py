@@ -17,13 +17,13 @@ def work_vel(conn, cmsg, handler=None):
     # Map C++ cmsg to python dictionary
 
     value = {
-        'linear_x': cmsg[1],
-        'linear_y': cmsg[2],
+        'linear_x': 0,
+        'linear_y': 0,
         'linear_z': 0,
         'ang_x': 0,
         'ang_y': 0,
-        'ang_z': cmsg[3],
-        'speed': cmsg[4],
-        'turn': cmsg[5]
+        'ang_z': 0,
+        'speed': 0,
+        'turn': 0
     }
     handler.update(**value)

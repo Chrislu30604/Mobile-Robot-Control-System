@@ -28,7 +28,7 @@ int main(){
 	bzero(&info, sizeof(info));
 	info.sin_family = AF_INET;
 	info.sin_addr.s_addr = inet_addr(IPaddress);
-	info.sin_port = htons(8001);
+	info.sin_port = htons(8003);
 
 	int err = connect(sock, (struct sockaddr *)&info, sizeof(info));
 	if (err == -1){

@@ -29,7 +29,7 @@ def main():
     sub_Renc = rospy.Subscriber('/Rencoder', Int16, myrostools.callback_Rencoder)
     sub_Lenc = rospy.Subscriber('/Lencoder', Int16, myrostools.callback_Lencoder)
     # Publishes
-    pub_vel = rospy.Publishes('cmd_vel', Twist, queue_size=1)
+    pub_vel = rospy.Publisher('cmd_vel', Twist, queue_size=1)
     walk_wheel = WalkWheel(pub_vel)
 
     # Thread Pooooooool
@@ -37,10 +37,9 @@ def main():
     enc_t = Listener(work_enc, HOST, PORT['ENC'])
     vel_t = Listener(work_vel, HOST, PORT['VEL'], walk_wheel)
     threadManger = [laser_t, enc_t, vel_t] # Wrapper
-
-    while not rospy.is_shutdown():
-        map(lambda obj:(obj.setDaemon(True), obj.start()), threadManger)
-        walk_wheel.run()
+    
+    map(lambda obj:(obj.setDaemon(True), obj.start()), threadManger)
+    walk_wheel.run()
 
 if __name__ == '__main__':
     main()

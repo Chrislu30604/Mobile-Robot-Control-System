@@ -4,7 +4,7 @@
 The module define the object ClientThread hold the port and ip for multithreading.
 Can Register specific JOB
 
-Todo:
+TODO:
     Try catch
 """
 import socket
@@ -22,7 +22,7 @@ class Listener(Thread):
         port : default is http/80/tcp
     """
 
-    def __init__(self, job, ip='127.0.0.1', port=80, max_client=1, handler=None):
+    def __init__(self, job, ip='127.0.0.1', port=80, handler=None, max_client=1):
         Thread.__init__(self)
         self.job = job
         self.ip = ip
@@ -41,5 +41,5 @@ class Listener(Thread):
             cl_msg = conn.recv(1024)
             cl_msg = cl_msg.rstrip(' \t\r\n\0')
             cmsg = cl_msg.split()
-            self.job(conn, cmsg, self.hander)
+            self.job(conn, cmsg, self.handler)
 
