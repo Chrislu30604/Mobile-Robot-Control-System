@@ -36,10 +36,13 @@ class Listener(Thread):
     def run(self):
         rospy.loginfo("Running {}:{}".format(self.ip, self.port))
         while True:
-            (conn, address) = self.sock.accept()
-            rospy.loginfo("{} accepted from {}".format(self.job, address))
-            cl_msg = conn.recv(1024)
-            cl_msg = cl_msg.rstrip(' \t\r\n\0')
-            cmsg = cl_msg.split()
-            self.job(conn, cmsg, self.handler)
+            try:
+                (conn, address) = self.sock.accept()
+                rospy.loginfo("{} accepted from {}".format(self.job, address))
+                cl_msg = conn.recv(1024)
+                cl_msg = cl_msg.rstrip(' \t\r\n\0')
+                cmsg = cl_msg.split()
+                self.job(conn, cmsg, self.handler)
+            except Exception:
+                rospy.logfatal("Acception Error")
 

@@ -3,6 +3,10 @@ import threading
 from geometry_msgs.msg import Twist
 
 sem = threading.Semaphore()
+laser_data = []
+Rencoder = 0
+Lenconder = 0
+
 
 class WalkWheel():
     def __init__(self, pub_vel):
@@ -13,7 +17,7 @@ class WalkWheel():
         rate = rospy.Rate(10)
         while not rospy.is_shutdown():
             sem.acquire()
-            print("__")
+            rospy.loginfo(self.twist)
             self.pub_vel.publish(self.twist)
             sem.release()
             rate.sleep()
@@ -24,16 +28,52 @@ class WalkWheel():
             speed = param.get('speed')
             turn = param.get('turn')
             self.twist.linear.x = param.get('linear_x') * speed
-            self.twist.linear.y = param.get('linear_y') * speed   
+            self.twist.linear.y = param.get('linear_y') * speed
             self.twist.linear.z = param.get('linear_z') * speed
             self.twist.angular.x = param.get('ang_x') * turn
             self.twist.angular.y = param.get('ang_y') * turn
             self.twist.angular.z = param.get('ang_z') * turn
         except KeyError as error:
-            rospy.Fatal('Require correct arugment', error)
+            rospy.logfatal('Require correct arugment', error)
         finally:
             sem.release()
 
     def stop(self):
-        rospy.info("Stop")
+        rospy.loginfo("Stop")
         self.pub_vel.publish(Twist())
+
+
+""" Call Back Function
+"""
+
+
+def callback_laser(msg):
+    laser_data = msg.ranges
+
+
+def callback_Renconder(msg):
+    Rencoder = msg.data
+
+
+def callback_Lencoder(msg):
+    Lenconder = msg.data
+
+
+def handle_laser_data(ranges, decimal):
+    try:
+        assert(ranges == '0~180' or ranges == '540~720')
+    except AssertionError as e:
+        rospy.logfatal("Wrong Range 0-180, 540-720 ", e)
+
+    if ranges == '0~180':
+	    message = '0~180 '
+	    for i in range(180):
+		    message += (str(laser_data[i])[:decimal] + ' ')
+	    rospy.loginfo('Send Laserdata 0~180')
+
+    elif ranges == '540~720':
+	    message = '540~720 '
+	    for i in range(180):
+		    message += (str(laser_data[540+i])[:decimal] + ' ')
+	    rospy.loginfo('Send Laserdata 540~720')
+    return message
