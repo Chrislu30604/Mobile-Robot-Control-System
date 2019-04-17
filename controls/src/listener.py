@@ -11,6 +11,7 @@ import socket
 import rospy
 from threading import Thread
 
+
 class Listener(Thread):
     """ Listener Class.
     The Class register by ip, port and run by start
@@ -31,18 +32,18 @@ class Listener(Thread):
         self.sock.bind((self.ip, self.port))
         self.sock.listen(max_client)
         self.handler = handler
-        rospy.loginfo("Start job {} on {}:{}".format(self.job, self.ip, self.port))
+        rospy.loginfo("Start job {} on {}:{}".format(
+            self.job, self.ip, self.port))
 
     def run(self):
         rospy.loginfo("Running {}:{}".format(self.ip, self.port))
+        (conn, address) = self.sock.accept() # wait
+        rospy.loginfo("{} accepted from {}".format(self.job, address))
         while True:
             try:
-                (conn, address) = self.sock.accept()
-                rospy.loginfo("{} accepted from {}".format(self.job, address))
                 cl_msg = conn.recv(1024)
                 cl_msg = cl_msg.rstrip(' \t\r\n\0')
                 cmsg = cl_msg.split()
                 self.job(conn, cmsg, self.handler)
             except Exception:
-                rospy.logfatal("Acception Error")
-
+                rospy.logfatal(Exception)

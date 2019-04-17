@@ -3,9 +3,37 @@ import threading
 from geometry_msgs.msg import Twist
 
 sem = threading.Semaphore()
-laser_data = []
-Rencoder = 0
-Lenconder = 0
+
+class DataHolder(object):
+
+    def __init__(self, laser_data=[1, 2, 3], rencoder=0, lencoder=0):
+        self._laser_data = laser_data
+        self._rencoder = rencoder
+        self._lencoder = lencoder
+    
+    @property
+    def laser_data(self):
+        return self._laser_data
+    
+    @property
+    def rencoder(self):
+        return self._rencoder
+
+    @property
+    def lencoder(self):
+        return self._lencoder
+
+    @laser_data.setter
+    def laser_data(self, new_laser_data):
+        self._laser_data = new_laser_data
+
+    @rencoder.setter
+    def rencoder(self, new_rencoder):
+        self._rencoder = new_rencoder
+
+    @lencoder.setter
+    def lencoder(self, new_lencoder):
+        self._lencoder = new_lencoder
 
 
 class WalkWheel():
@@ -17,7 +45,7 @@ class WalkWheel():
         rate = rospy.Rate(10)
         while not rospy.is_shutdown():
             sem.acquire()
-            rospy.loginfo(self.twist)
+            # rospy.loginfo(self.twist)
             self.pub_vel.publish(self.twist)
             sem.release()
             rate.sleep()
@@ -41,42 +69,3 @@ class WalkWheel():
     def stop(self):
         rospy.loginfo("Stop")
         self.pub_vel.publish(Twist())
-
-
-""" Call Back Function
-"""
-
-
-def callback_laser(msg):
-    global laser_data 
-    laser_data = msg.ranges
-
-
-def callback_Renconder(msg):
-    global Rencoder 
-    Rencoder = msg.data
-
-
-def callback_Lencoder(msg):
-    global Lenconder 
-    Lenconder = msg.data
-
-
-def handle_laser_data(ranges, decimal):
-    try:
-        assert(ranges == '0~180' or ranges == '540~720')
-    except AssertionError as e:
-        rospy.logfatal("Wrong Range 0-180, 540-720 ", e)
-
-    if ranges == '0~180':
-	    message = '0~180 '
-	    for i in range(180):
-		    message += (str(laser_data[i])[:decimal] + ' ')
-	    rospy.loginfo('Send Laserdata 0~180')
-
-    elif ranges == '540~720':
-	    message = '540~720 '
-	    for i in range(180):
-		    message += (str(laser_data[540+i])[:decimal] + ' ')
-	    rospy.loginfo('Send Laserdata 540~720')
-    return message

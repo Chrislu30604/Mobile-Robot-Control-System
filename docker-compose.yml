@@ -1,0 +1,14 @@
+version: '3'
+services:
+  robotros:
+    build: .
+    container_name: "robotros"
+    ports:
+      - "8001:8001"
+      - "8002:8002"
+      - "8003:8003"
+    volumes:
+      - /home/chrislu/robotLabatory/Mobile-Robot-Control-System/controls/src:/robot/src/roboticlab/src
+      - /home/chrislu/robotLabatory/Mobile-Robot-Control-System/controls/launch:/robot/src/roboticlab/launch
+    tty: true
+

@@ -53,7 +53,4 @@ RUN echo "source /robot/devel/setup.bash" >> ~/.bashrc
 
 WORKDIR /robot
 
-VOLUME /home/chrislu/robotLabatory/Mobile-Robot-Control-System/controls/src/ /robot/src/roboticlab/launch
-VOLUME /home/chrislu/robotLabatory/Mobile-Robot-Control-System/controls/launch/ /robot/src/roboticlab/src
-
 #EXPOSE 10024 10025 10026
